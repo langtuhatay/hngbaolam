@@ -1,4 +1,4 @@
-simport streamlit as st
+import streamlit as st
 from sklearn.linear_model import LinearRegression
 
 st.sidebar.title("🎶 Danh sách nghệ sĩ")
