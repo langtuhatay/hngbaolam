@@ -1,5 +1,6 @@
 import streamlit as st
 from sklearn.linear_model import LinearRegression
+import feedparser
 
 st.sidebar.title("🎶 Danh sách nghệ sĩ")
 selected_artist = st.sidebar.radio("Chọn nghệ sĩ:", ["Đen Vâu", "Hà Anh Tuấn", "Sơn Tùng M-TP"])
@@ -68,4 +69,9 @@ with tab2:
         else:
             st.success("✅ Lượng ngủ lý tưởng! Hãy giữ thói quen tốt nhé.")
 with tab3:
-    st.header("Đọc báo")
+    st.header("📰 Tin tức mới nhất từ VnExpress")
+    feed = feedparser.parse("https://vnexpress.net/rss/tin-moi-nhat.rss")
+    for entry in feed.entries[:5]:
+        st.subheader(entry.title)
+        st.write(entry.published)
+        st.write(entry.link)s
