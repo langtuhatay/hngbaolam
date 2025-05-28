@@ -1,4 +1,4 @@
-import streamlit as st
+simport streamlit as st
 from sklearn.linear_model import LinearRegression
 
 st.sidebar.title("🎶 Danh sách nghệ sĩ")
@@ -27,7 +27,7 @@ videos = {
 
 st.title("🎧 Ứng dụng giải trí và sức khỏe")
 
-tab1, tab2 = st.tabs(["🎤 MV yêu thích", "💤 Dự đoán giờ ngủ"])
+tab1, tab2, tab3 = st.tabs(["🎤 MV yêu thích", "💤 Dự đoán giờ ngủ", "📰 Đọc Báo" "])
 
 with tab1:
     st.header(f"Các bài hát của {selected_artist} 🎵")
@@ -67,3 +67,5 @@ with tab2:
             st.info("😅 Có thể bạn đang vận động nhiều – ngủ bù hợp lý nhé.")
         else:
             st.success("✅ Lượng ngủ lý tưởng! Hãy giữ thói quen tốt nhé.")
+with tab3:
+    st.header("Đọc báo")
