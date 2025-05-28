@@ -1,13 +1,7 @@
 import streamlit as st
 
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    b1 = st.button("Bài hát của Đen Vâu")
-with col2:
-    b2 = st.button("Bài hát của Hà Anh Tuấn")
-with col3:
-    b3 = st.button("Bài hát của Sơn Tùng M-TP")
+st.sidebar.title("🎶 Danh sách nghệ sĩ")
+selected_artist = st.sidebar.radio("Chọn nghệ sĩ:", ["Đen Vâu", "Hà Anh Tuấn", "Sơn Tùng M-TP"])
 
 videos = {
     "Đen Vâu": [
@@ -30,16 +24,9 @@ videos = {
     ]
 }
 
-def show_videos(singer_name):
-    with st.expander(f"{singer_name} 🎵"):
-        st.title("MV YÊU THÍCH")
-        for title, url in videos[singer_name]:
-            st.write(title)
-            st.video(url)
+st.title("MV YÊU THÍCH")
+st.header(f"Các bài hát của {selected_artist} 🎵")
 
-if b1:
-    show_videos("Đen Vâu")
-if b2:
-    show_videos("Hà Anh Tuấn")
-if b3:
-    show_videos("Sơn Tùng M-TP")
+for title, url in videos[selected_artist]:
+    st.subheader(title)
+    st.video(url)
