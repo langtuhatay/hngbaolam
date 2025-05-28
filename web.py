@@ -74,4 +74,4 @@ with tab3:
     for entry in feed.entries[:5]:
         st.subheader(entry.title)
         st.write(entry.published)
-        st.write(entry.link)s
+        st.write(entry.link)
