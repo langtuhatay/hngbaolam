@@ -3,33 +3,39 @@ from sklearn.linear_model import LinearRegression
 import feedparser
 import requests
 
+try:
+    EXCHANGE_RATE_API_KEY = st.secrets["EXCHANGE_RATE_API_KEY"]
+except KeyError:
+    st.error("Lỗi: Không tìm thấy API Key. Vui lòng cấu hình API Key trong file .streamlit/secrets.toml (khi chạy cục bộ) hoặc trong Streamlit Cloud Secrets.")
+    st.stop()
+
 st.sidebar.title("🎶 Danh sách nghệ sĩ")
 selected_artist = st.sidebar.radio("Chọn nghệ sĩ:", ["Đen Vâu", "Hà Anh Tuấn", "Sơn Tùng M-TP"])
 
 videos = {
     "Đen Vâu": [
-        ("Bữa ăn cho em", "https://www.youtube.com/watch?v=ukHK1GVyr0I"),
-        ("Mang tiền về cho mẹ", "https://www.youtube.com/watch?v=UVbv-PJXm14"),
-        ("Trời hôm nay nhiều mây cực!", "https://www.youtube.com/watch?v=MBaF0l-PcRY"),
-        ("Hai triệu năm", "https://www.youtube.com/watch?v=LSMDNL4n0kM")
+        ("Bữa ăn cho em", "https://www.youtube.com/embed/P-Y3o67z_0Q"),
+        ("Mang tiền về cho mẹ", "https://www.youtube.com/embed/V-B-xWq28_0"),
+        ("Trời hôm nay nhiều mây cực!", "https://www.youtube.com/embed/bL7X_u98rP4"),
+        ("Hai triệu năm", "https://www.youtube.com/embed/sQZ_G5C8cI0")
     ],
     "Hà Anh Tuấn": [
-        ("Tuyết rơi mùa hè", "https://www.youtube.com/watch?v=pTh3KCD7Euc"),
-        ("Nước ngoài", "https://www.youtube.com/watch?v=pU3O9Lnp-Z0"),
-        ("Tháng tư là lời nói dối của em", "https://www.youtube.com/watch?v=UCXao7aTDQM"),
-        ("Xuân thì", "https://www.youtube.com/watch?v=3s1r_g_jXNs")
+        ("Tuyết rơi mùa hè", "https://www.youtube.com/embed/t8k3n383wR8"),
+        ("Nước ngoài", "https://www.youtube.com/embed/bL7X_u98rP4"),
+        ("Tháng tư là lời nói dối của em", "https://www.youtube.com/embed/U9sQv0y_19c"),
+        ("Xuân thì", "https://www.youtube.com/embed/bL7X_u98rP4")
     ],
     "Sơn Tùng M-TP": [
-        ("Lạc trôi", "https://www.youtube.com/watch?v=Llw9Q6akRo4"),
-        ("Chúng ta không thuộc về nhau", "https://www.youtube.com/watch?v=qGRU3sRbaYw"),
-        ("Muộn rồi mà sao còn", "https://www.youtube.com/watch?v=xypzmu5mMPY"),
-        ("Hãy trao cho anh", "https://www.youtube.com/watch?v=knW7-x7Y7RE")
+        ("Lạc trôi", "https://www.youtube.com/embed/L1_gYfM_t8I"),
+        ("Chúng ta không thuộc về nhau", "https://www.youtube.com/embed/fn7k5C1z20k"),
+        ("Muộn rồi mà sao còn", "https://www.youtube.com/embed/FwF9yF5wA10"),
+        ("Hãy trao cho anh", "https://www.youtube.com/embed/D3a47XnLq8o")
     ]
 }
 
 st.title("🎧 Ứng dụng giải trí và sức khỏe")
 
-tab1, tab2, tab3, tab4 = st.tabs(["🎤 MV yêu thích", "💤 Dự đoán giờ ngủ", "📰 Đọc báo", "💱 Quy đổi tiền tệ"])
+tab1, tab2, tab3, tab4 = st.tabs(["🎤 MV yêu thích", "💤 Dự đoán giờ ngủ", "📰 Đọc báo", "💲 Quy đổi tiền tệ"])
 
 with tab1:
     st.header(f"Các bài hát của {selected_artist} 🎵")
@@ -69,31 +75,52 @@ with tab2:
             st.info("😅 Có thể bạn đang vận động nhiều – ngủ bù hợp lý nhé.")
         else:
             st.success("✅ Lượng ngủ lý tưởng! Hãy giữ thói quen tốt nhé.")
-
+            
 with tab3:
     st.header("📰 Tin tức mới nhất từ VnExpress")
-    feed = feedparser.parse("https://vnexpress.net/rss/tin-moi-nhat.rss")
-    for entry in feed.entries[:5]:
-        st.subheader(entry.title)
-        st.write(entry.published)
-        st.write(entry.link)
+    feed = feedparser.parse("https://vnexpress.net/rss/tin-moi-nhat.rss") 
+    
+    if feed.entries:
+        for entry in feed.entries[:5]:
+            st.subheader(entry.title)
+            st.write(f"_{entry.published}_")
+            st.markdown(f"[Đọc thêm]({entry.link})")
+            st.write("---")
+    else:
+        st.info("Không thể tải tin tức. Vui lòng kiểm tra kết nối mạng hoặc nguồn RSS.")
 
 with tab4:
-    st.header("💱 Chuyển đổi tiền tệ theo thời gian thực")
+    st.header("💲 Quy đổi tiền tệ")
 
-    currency_list = ["USD", "VND", "EUR", "JPY", "GBP", "AUD", "CAD", "CNY", "KRW"]
-    from_currency = st.selectbox("Chuyển từ:", currency_list, index=0)
-    to_currency = st.selectbox("Sang:", currency_list, index=1)
-    amount = st.number_input("Số tiền:", min_value=0.0, value=100.0, step=10.0)
+    currencies = ["VND", "USD", "EUR", "GBP", "JPY", "KRW", "CNY", "AUD", "CAD"]
 
-    if st.button("💵 Quy đổi"):
-        url = f"https://api.exchangerate.host/convert?from={from_currency}&to={to_currency}&amount={amount}"
-        response = requests.get(url)
-        if response.status_code == 200:
+    amount = st.number_input("Nhập số tiền cần quy đổi:", min_value=0.01, value=1.00)
+    from_currency = st.selectbox("Từ tiền tệ:", currencies, index=1)
+    to_currency = st.selectbox("Sang tiền tệ:", currencies, index=0)
+
+    if st.button("🔄 Quy đổi"):
+        url = f"https://v6.exchangerate-api.com/v6/{EXCHANGE_RATE_API_KEY}/latest/{from_currency}"
+        
+        try:
+            response = requests.get(url)
             data = response.json()
-            result = data['result']
-            rate = data['info']['rate']
-            st.success(f"{amount:,.2f} {from_currency} = {result:,.2f} {to_currency}")
-            st.caption(f"Tỷ giá hiện tại: 1 {from_currency} = {rate:.4f} {to_currency}")
-        else:
-            st.error("Không thể lấy dữ liệu. Vui lòng thử lại sau.")
+
+            if data["result"] == "success":
+                exchange_rates = data["conversion_rates"]
+                
+                if to_currency in exchange_rates:
+                    rate = exchange_rates[to_currency]
+                    converted_amount = amount * rate
+                    st.success(f"{amount:,.2f} {from_currency} = **{converted_amount:,.2f} {to_currency}**")
+                    st.info(f"Tỷ giá hiện tại: 1 {from_currency} = {rate:,.5f} {to_currency}")
+                else:
+                    st.warning("Không tìm thấy tỷ giá cho đồng tiền đích. Vui lòng thử lại.")
+            elif data["result"] == "error":
+                st.error(f"Lỗi từ API: {data.get('error-type', 'Không xác định')}. Vui lòng kiểm tra API Key và đồng tiền cơ sở.")
+            else:
+                st.error("Lỗi không xác định khi lấy dữ liệu tỷ giá.")
+
+        except requests.exceptions.ConnectionError:
+            st.error("Không thể kết nối đến máy chủ API. Vui lòng kiểm tra kết nối internet của bạn.")
+        except Exception as e:
+            st.error(f"Đã xảy ra lỗi: {e}")
