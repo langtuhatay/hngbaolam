@@ -1,6 +1,7 @@
 import streamlit as st
 from sklearn.linear_model import LinearRegression
 import feedparser
+import requests
 
 st.sidebar.title("🎶 Danh sách nghệ sĩ")
 selected_artist = st.sidebar.radio("Chọn nghệ sĩ:", ["Đen Vâu", "Hà Anh Tuấn", "Sơn Tùng M-TP"])
@@ -28,7 +29,7 @@ videos = {
 
 st.title("🎧 Ứng dụng giải trí và sức khỏe")
 
-tab1, tab2, tab3 = st.tabs(["🎤 MV yêu thích", "💤 Dự đoán giờ ngủ", "📰 Đọc báo" ])
+tab1, tab2, tab3, tab4 = st.tabs(["🎤 MV yêu thích", "💤 Dự đoán giờ ngủ", "📰 Đọc báo", "💱 Quy đổi tiền tệ"])
 
 with tab1:
     st.header(f"Các bài hát của {selected_artist} 🎵")
@@ -68,6 +69,7 @@ with tab2:
             st.info("😅 Có thể bạn đang vận động nhiều – ngủ bù hợp lý nhé.")
         else:
             st.success("✅ Lượng ngủ lý tưởng! Hãy giữ thói quen tốt nhé.")
+
 with tab3:
     st.header("📰 Tin tức mới nhất từ VnExpress")
     feed = feedparser.parse("https://vnexpress.net/rss/tin-moi-nhat.rss")
@@ -75,3 +77,23 @@ with tab3:
         st.subheader(entry.title)
         st.write(entry.published)
         st.write(entry.link)
+
+with tab4:
+    st.header("💱 Chuyển đổi tiền tệ theo thời gian thực")
+
+    currency_list = ["USD", "VND", "EUR", "JPY", "GBP", "AUD", "CAD", "CNY", "KRW"]
+    from_currency = st.selectbox("Chuyển từ:", currency_list, index=0)
+    to_currency = st.selectbox("Sang:", currency_list, index=1)
+    amount = st.number_input("Số tiền:", min_value=0.0, value=100.0, step=10.0)
+
+    if st.button("💵 Quy đổi"):
+        url = f"https://api.exchangerate.host/convert?from={from_currency}&to={to_currency}&amount={amount}"
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            result = data['result']
+            rate = data['info']['rate']
+            st.success(f"{amount:,.2f} {from_currency} = {result:,.2f} {to_currency}")
+            st.caption(f"Tỷ giá hiện tại: 1 {from_currency} = {rate:.4f} {to_currency}")
+        else:
+            st.error("Không thể lấy dữ liệu. Vui lòng thử lại sau.")
