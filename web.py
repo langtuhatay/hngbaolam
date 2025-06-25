@@ -124,39 +124,39 @@ with tab4:
             st.error("Không thể kết nối đến máy chủ API. Vui lòng kiểm tra kết nối internet của bạn.")
         except Exception as e:
             st.error(f"Đã xảy ra lỗi: {e}")
-with tab5
+with tab5:
     st.title('Dự đoán số lượng nước nên uống mỗi ngày')
 
-x = [
-    [50, 3, 20],
-    [60, 5, 25],
-    [70, 7, 30],
-    [80, 10, 35],
-    [55, 2, 28],
-    [65, 6, 33],
-    [75, 8, 38],
-]
-y = [1.5, 2.0, 3.0, 2.2, 3.5, 1.3, 2.7]
+    x = [
+        [50, 3, 20],
+        [60, 5, 25],
+        [70, 7, 30],
+        [80, 10, 35],
+        [55, 2, 28],
+        [65, 6, 33],
+        [75, 8, 38],
+    ]
+    y = [1.5, 2.0, 3.0, 2.2, 3.5, 1.3, 2.7]
 
-model = LinearRegression()
-model.fit(x, y)
+    model = LinearRegression()
+    model.fit(x, y)
 
-st.write("Nhập thông tin của bạn")
-weight = st.number_input("Cân nặng (kg)", min_value=30, max_value=150, value=65)
-acticity = st.slider("Mức độ hoạt động (1 = ít, 10 = rất nhiều)", 1, 10, 5)
-temperature = st.number_input("Nhiệt độ môi trường °C", min_value=10, max_value=45, value=25)
-
-if st.button("Dự đoán lượng nước cần uống"):
-    input_data = np.array([[weight, acticity, temperature]])
-    prediction = model.predict(input_data)[0]
-    st.success(f"Bạn nên uống khoảng {prediction: .2f} lít nước mỗi ngày")
-
-    if prediction < 1.5:
-        st.warning("Lượng nước hơi ít, bạn nên bổ sung rau và hoa quả nhé ")
-    elif prediction > 3:
-        st.info("Bạn vận động nhiều hoặc trời nóng - đừng quên mang thêm nước khi ra ngoài nhé! ")
-
-    with st.expander("xem dữ liệu huấn luyện mẫu"):
-        st.write("Dữ liệu đầu vào : [Cân nặng, vận động, nhiệt độ ]")
-        st.write(x)
-        st.write("Lượng nước (lít): ", y)
+    st.write("Nhập thông tin của bạn")
+    weight = st.number_input("Cân nặng (kg)", min_value=30, max_value=150, value=65)
+    acticity = st.slider("Mức độ hoạt động (1 = ít, 10 = rất nhiều)", 1, 10, 5)
+    temperature = st.number_input("Nhiệt độ môi trường °C", min_value=10, max_value=45, value=25)
+    
+    if st.button("Dự đoán lượng nước cần uống"):
+        input_data = np.array([[weight, acticity, temperature]])
+        prediction = model.predict(input_data)[0]
+        st.success(f"Bạn nên uống khoảng {prediction: .2f} lít nước mỗi ngày")
+    
+        if prediction < 1.5:
+            st.warning("Lượng nước hơi ít, bạn nên bổ sung rau và hoa quả nhé ")
+        elif prediction > 3:
+            st.info("Bạn vận động nhiều hoặc trời nóng - đừng quên mang thêm nước khi ra ngoài nhé! ")
+    
+        with st.expander("xem dữ liệu huấn luyện mẫu"):
+            st.write("Dữ liệu đầu vào : [Cân nặng, vận động, nhiệt độ ]")
+            st.write(x)
+            st.write("Lượng nước (lít): ", y)
