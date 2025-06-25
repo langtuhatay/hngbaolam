@@ -156,7 +156,7 @@ with tab5:
         elif prediction > 3:
             st.info("Bạn vận động nhiều hoặc trời nóng - đừng quên mang thêm nước khi ra ngoài nhé! ")
     
-        with st.expander("xem dữ liệu huấn luyện mẫu"):
-            st.write("Dữ liệu đầu vào : [Cân nặng, vận động, nhiệt độ ]")
-            st.write(x)
-            st.write("Lượng nước (lít): ", y)
+with st.expander("xem dữ liệu huấn luyện mẫu"):
+    st.write("Dữ liệu đầu vào : [Cân nặng, vận động, nhiệt độ ]")
+    st.write(x)
+    st.write("Lượng nước (lít): ", y)
