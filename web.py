@@ -2,6 +2,8 @@ import streamlit as st
 from sklearn.linear_model import LinearRegression
 import feedparser
 import requests
+import numpy as np
+
 
 try:
     EXCHANGE_RATE_API_KEY = st.secrets["EXCHANGE_RATE_API_KEY"]
