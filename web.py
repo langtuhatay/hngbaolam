@@ -37,7 +37,7 @@ videos = {
 
 st.title("🎧 Ứng dụng giải trí và sức khỏe")
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["🎤 MV yêu thích", "💤 Dự đoán giờ ngủ", "📰 Đọc báo", "💲 Quy đổi tiền tệ", "💧Dự đoán số lượng nước nên uống mỗi ngày"])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["🎤 MV yêu thích", "💤 Dự đoán giờ ngủ", "📰 Đọc báo", "💲 Quy đổi tiền tệ", "💧Dự đoán số lượng nước nên uống mỗi ngày", "📊Tính chỉ số BMI"])
 
 with tab1:
     st.header(f"Các bài hát của {selected_artist} 🎵")
@@ -164,3 +164,22 @@ with st.expander("xem dữ liệu huấn luyện mẫu"):
     st.write("Dữ liệu đầu vào : [Cân nặng, vận động, nhiệt độ ]")
     st.write(x)
     st.write("Lượng nước (lít): ", y)
+with tab6:
+    st.header("📊 Kiểm tra chỉ số BMI của bạn")
+
+    can_nang = st.number_input("Nhập cân nặng của bạn (kg)", min_value=10.0, max_value=200.0, value=60.0, step=0.1)
+    chieu_cao = st.number_input("Nhập chiều cao của bạn (m)", min_value=1.0, max_value=2.5, value=1.7, step=0.01)
+
+    if st.button("🧮 Tính BMI"):
+        bmi = can_nang / (chieu_cao ** 2)
+        st.success(f"Chỉ số BMI của bạn là: {bmi:.2f}")
+
+        if bmi < 18.5:
+            st.warning("Bạn đang thiếu cân, nên ăn uống đầy đủ và dinh dưỡng hơn.")
+        elif 18.5 <= bmi < 25:
+            st.info("Bạn có cân nặng bình thường. Hãy tiếp tục duy trì lối sống lành mạnh.")
+        elif 25 <= bmi < 30:
+            st.warning("Bạn đang thừa cân. Nên cân đối chế độ ăn và tập thể dục.")
+        else:
+            st.error("Bạn đang béo phì. Nên gặp chuyên gia dinh dưỡng hoặc bác sĩ để được tư vấn.")
+
