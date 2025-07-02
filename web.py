@@ -37,8 +37,14 @@ videos = {
 
 st.title("🎧 Ứng dụng giải trí và sức khỏe")
 
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["🎤 MV yêu thích", "💤 Dự đoán giờ ngủ", "📰 Đọc báo", "💲 Quy đổi tiền tệ", "💧Dự đoán số lượng nước nên uống mỗi ngày", "📊Tính chỉ số BMI"])
-
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+    "🎤 MV yêu thích",
+    "💤 Dự đoán giờ ngủ",
+    "📰 Đọc báo",
+    "💲 Quy đổi tiền tệ",
+    "💧Dự đoán số lượng nước nên uống mỗi ngày",
+    "📊 Tính chỉ số BMI"
+])
 with tab1:
     st.header(f"Các bài hát của {selected_artist} 🎵")
     for title, url in videos[selected_artist]:
