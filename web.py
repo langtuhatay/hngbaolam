@@ -36,7 +36,7 @@ videos = {
 
 st.title("🎧 Ứng dụng giải trí và sức khỏe")
 
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
     "🎤 MV yêu thích",
     "💤 Dự đoán giờ ngủ",
     "📰 Đọc báo",
@@ -44,9 +44,9 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
     "💧Dự đoán số lượng nước nên uống mỗi ngày",
     "📊 Tính chỉ số BMI",
     "🩺 Kiểm tra nên gặp bác sĩ?",
-    "🚶‍♂️ Dự đoán số bước mỗi ngày"
+    "🚶‍♂️ Dự đoán số bước mỗi ngày",
+    "🧠 Kiểm tra chỉ số IQ"
 ])
-
 with tab1:
     st.header(f"Các bài hát của {selected_artist} 🎵")
     for title, url in videos[selected_artist]:
@@ -200,3 +200,33 @@ with tab8:
     if st.button("🏃 Dự đoán số bước"):
         steps = model.predict([[age, weight, height]])[0]
         st.success(f"Bạn nên đi khoảng {int(steps):,} bước mỗi ngày")
+with tab9:
+    st.header("🧠 Kiểm tra chỉ số IQ theo độ tuổi")
+
+    def get_iq_range(age):
+        if 5 <= age <= 7:
+            return 85, 115
+        elif 8 <= age <= 12:
+            return 90, 115
+        elif 13 <= age <= 17:
+            return 90, 115
+        elif age >= 18:
+            return 85, 115
+        else:
+            return None, None
+
+    age = st.number_input("Nhập tuổi của bạn:", min_value=1, max_value=100, value=18)
+    iq = st.number_input("Nhập chỉ số IQ của bạn:", min_value=40, max_value=200, value=100)
+
+    if st.button("Kiểm tra IQ"):
+        min_iq, max_iq = get_iq_range(age)
+
+        if min_iq is None:
+            st.error("Tuổi không hợp lệ để đánh giá.")
+        elif iq < min_iq:
+            st.error("Chỉ số IQ của bạn dưới mức trung bình.")
+        elif iq > max_iq:
+            st.warning("Chỉ số IQ của bạn trên mức trung bình.")
+        else:
+            st.success("Chỉ số IQ của bạn nằm trong mức trung bình.")
+
