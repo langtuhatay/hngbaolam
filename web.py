@@ -231,61 +231,103 @@ with tab9:
         else:
             st.success("Chỉ số IQ của bạn nằm trong mức trung bình.")
 with tab10:
-    st.header("Kiểm tra tính cách DISC")
-    st.markdown("Chọn một mô tả đúng nhất và một mô tả ít đúng nhất trong từng nhóm:")
+    st.header("Phân tích tướng mạo theo ngũ hành")
+    st.markdown("Chọn các đặc điểm bạn cảm thấy đúng với gương mặt của mình")
 
-    groups = [
-        {
-            "D": "Tôi quyết đoán và thích kiểm soát",
-            "I": "Tôi thích thân thiện và nói chuyện dễ dàng",
-            "S": "Tôi kiên nhẫn và đáng tin cậy",
-            "C": "Tôi chính xác và có hệ thống"
-        },
-        {
-            "D": "Tôi thích thử thách và hành động nhanh",
-            "I": "Tôi tràn đầy năng lượng và lạc quan",
-            "S": "Tôi ổn định và hỗ trợ người khác",
-            "C": "Tôi làm việc theo quy tắc rõ ràng"
-        },
-        {
-            "D": "Tôi thích kiểm soát kết quả",
-            "I": "Tôi thích được công nhận",
-            "S": "Tôi ưu tiên sự hài hòa",
-            "C": "Tôi chú ý đến việc chi tiết và phân tích"
-        }
-    ]
+    st.subheader("Đôi mắt")
+    eyes_good = st.multiselect("Đặc điểm tốt về mắt:", [
+    "Mắt sáng và có thần (tư duy nhanh nhạy, có năng lượng)",
+    "Mắt dài và đều (tâm nhìn chiến lược và có nội tâm sâu sắc)",
+    "Mắt cười (dễ gần, thân thiện và gia tiếp mạnh )"
+    ])
+    eyes_bad = st.multiselect("Đặc điểm chưa tốt về mắt:", [
+    "Mắt lờ đờ, thiếu thần (thiếu sinh khí và mệt mỏi)",
+    "Mắt không cân xứng (thiếu cân bằng về cảm xúc)",
+    "Tròng trắng lấn tròng đen (dễ gặp bất ổn, tâm lý dao động)"
+    ])
 
-    scores = {"D": 0, "I": 0, "S": 0, "C": 0}
+    st.subheader("Mũi")
+    nose_good = st.multiselect("Đặc điểm tốt về mũi:", [
+    "Mũi cao thẳng và đầy đặn (tài vận tốt, lập nghiệp dễ dàng)",
+    "Cánh mũi dày, đều (biết giữ tiền và quản lý tài chính tốt)",
+    "Đầu mũi tròn đầy (lòng bao dung và nhân hậu )"
+    ])
+    nose_bad = st.multiselect("Đặc điểm chưa tốt về mũi:", [
+    "Mũi lệch (tính cách thiếu ổn định)",
+    "Mũi hếch (khó giữ của, hay tiêu xài)",
+    "Cánh mũi mỏng (tài chính bấp bênh )"
+    ])
 
-    for idx, group in enumerate(groups):
-        st.markdown(f"### Nhóm {idx + 1}")
-        options = list(group.values())
-        keys = list(group.keys())
+    st.subheader("Tai")
+    ears_good = st.multiselect("Đặc điểm tốt về tai:", [
+    "Tai dày, vành rõ (sức khỏe tốt, có phúc khí)",
+    "Dái tai dày (hậu vận vượng vàng )",
+    "Tai cao hơn chân mày (tư duy tốt, trí tuệ sáng )"
+    ])
+    ears_bad = st.multiselect("Đặc điểm chưa tốt về tai:", [
+    "Tai mỏng như giấy (yếu vận, dễ bị ảnh hưởng)",
+    "Tai vểnh ra ngoài (nóng nảy, bốc đồng)",
+    "Tai thấp hơn lông mày (thiếu tư duy chiến lược)"
+    ])
 
-        most = st.radio("✅ Mô tả đúng nhất với bạn", options, key=f"most_{idx}")
-        least = st.radio("❌ Mô tả ít đúng nhất với bạn", options, key=f"least_{idx}")
+    st.subheader("Trán")
+    forehead_good = st.multiselect("Đặc điểm tốt về trán:", [
+    "Trán cao và rộng (thông minh, tư duy logic)",
+    "Trán đầy đặn, tròn láng (sự nghiệp tốt thuận lợi )",
+    "Không có nếp nhăn lộn xộn (suy nghĩ tích cực ổn định )"
+    ])
+    forehead_bad = st.multiselect("Đặc điểm chưa tốt về trán:", [
+    "Trán thấp và hẹp (tầm nhìn hạn chế)",
+    "Trán nghiêng (thiếu kiên định )",
+    "Trán lõm (dễ bị chi phối thiếu quyết đoán)"
+    ])
 
-        for key, val in group.items():
-            if val == most:
-                scores[key] += 1
-            if val == least:
-                scores[key] -= 1
+    st.subheader("Miệng")
+    mouth_good = st.multiselect("Đặc điểm tốt về miệng:", [
+    "Miệng cười duyên, môi đầy (giao tiếp tốt và hòa đồng )",
+    "Khóe miệng hướng lên (lạc quan, tích )",
+    "Môi dưới dày hơn môi trên (hậu vận tốt, có phúc hậu )"
+    ])
+    mouth_bad = st.multiselect("Đặc điểm chưa tốt về miệng:", [
+    "Miệng méo lệch (lời nói dễ gây hiểu nhầm)",
+    "Môi khô, nứt (khô biểu đạt, thiếu sức sống)",
+    "Khóe miệng hướng xuống (bi quan, dễ lo âu)"
+    ])
 
-    if st.button("🔍 Xem kết quả DISC"):
-        st.subheader("🧠 Kết quả của bạn")
-        max_type = max(scores, key=scores.get)
+    st.subheader("Lông mày")
+    eyebrow_good = st.multiselect("Đặc điểm tốt về lông mày:", [
+    "Lông mày dài và đều (trí tuệ, nhân hậu)",
+    "Khoảng cách đều nhau, không chạm mắt (tư duy tốt)",
+    "Đôi lông mày hướng lên nhẹ (có chí tiến thủ)"
+    ])
+    eyebrow_bad = st.multiselect("Đặc điểm chưa tốt về lông mày:", [
+    "Lông mày rất không rõ nét (tâm lý dễ loạn và kém kiên định)",
+    "Khoảng cách lông mày quá gần (nóng nảy, thiếu kiên nhẫn)",
+    "Đuôi mày rụng, mỏng (thiếu ý chí, vận khí giảm)"
+    ])
 
-        for style, score in scores.items():
-            st.write(f"{style}: {score} điểm")
+    st.divider()
+    if st.button("Phân tích tổng hợp "):
+      st.subheader("Tóm tắt đánh giá theo ngũ quan")
 
-        st.markdown(f"**Tính cách nổi bật nhất của bạn là: {max_type}**")
+    def show_traits(title, traits):
+        if traits:
+            st.markdown(f"**{title}**")
+            for t in traits:
+                st.markdown(f"- {t}")
 
-        descriptions = {
-            "D": "Quyết đoán, định hướng kết quả và thích kiểm soát",
-            "I": "Giao tiếp tốt, tràn đầy năng lượng và truyền cảm hứng",
-            "S": "Kiên nhẫn, đáng tin cậy và hỗ trợ người khác",
-            "C": "Chính xác, tuân thủ quy trình và thích phân tích logic"
-        }
+        st.markdown("### Đặc điểm tích cực ")
+        show_traits("Mắt", eyes_good)
+        show_traits("Mũi", nose_good)
+        show_traits("Tai", ears_good)
+        show_traits("Trán", forehead_good)
+        show_traits("Miệng", mouth_good)
+        show_traits("Lông mày", eyebrow_good)
 
-        st.info(descriptions[max_type])
-        st.caption("Đây chỉ là bài tham khảo về chỉ số DISC")
+        st.markdown("***Đặc điểm cần lưu ý***")
+        show_traits("Mắt", eyes_bad)
+        show_traits("Mũi", nose_bad)
+        show_traits("Tai", ears_bad)
+        show_traits("Trán", forehead_bad)
+        show_traits("Miệng", mouth_bad)
+        show_traits("Lông mày", eyebrow_bad)
