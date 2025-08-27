@@ -2,3 +2,6 @@ streamlit
 scikit-learn
 feedparser
 requests
+LinearRegression
+pandas
+matplotlib
